@@ -1,5 +1,4 @@
 #include<windows.h>
-#include<conio.h>
 #include<stdlib.h>
 #include<stdio.h>
 #include<string.h>
@@ -71,9 +70,9 @@ void groupmaking(void)
 	making(num, *n);
 }
 
-void making(int num, char name)
+void making(int num, char name[])
 {
-	front[num] = { name };
+	strcpy_s(front[num].name, sizeof(name), name);
 	groupmaking();
 }
 
