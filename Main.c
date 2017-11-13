@@ -152,7 +152,7 @@ void add(void)
 		scanf("%c", &YN);
 		getchar();
 
-		printf("[debug]YN : %c\n", YN);
+		/*printf("[debug]YN : %c\n", YN);*/
 
 		Group[num].cnt++;
 		if (YN == 'Y' || YN == 'y')
