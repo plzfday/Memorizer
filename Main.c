@@ -1,14 +1,12 @@
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
 #include <Windows.h>
-#include <stdbool.h>	
 
 #define CLEAN system("cls")
 
 struct group
 {
-	int valid;	// ??? 
+	int valid;	// flag 
 	int cnt;	// 카드 개수
 	char name[20];	//그룹 이름
 	char front_card[101][1001];	// 카드 개수, 글자 수
@@ -17,7 +15,6 @@ struct group
 
 struct again
 {
-	int valid;
 	int cnt;
 	char name[20];
 	char front_card[101][1001];
@@ -26,7 +23,6 @@ struct again
 
 struct copy
 {
-	int valid;
 	int cnt;
 	char name[20];
 	char front_card[101][1001];
@@ -39,7 +35,7 @@ struct copy Copy[101];
 
 void menu();
 void groupmaking(void);
-
+void grouplist(void);
 void opengroup(int num);
 void showgroup(int open);
 void add(void);
@@ -62,14 +58,13 @@ int main()
 	return 0;
 }
 
-
 // 메뉴----------------------- 게임 시작
 void menu(void)
 {
 	CLEAN;
 	char Menu_input;
 
-	printf("press  m / o / a\n\n");
+	printf("press  m / o / a /h \n\n");
 	printf("m = 그룹생성 \n\no =  그룹열기(공부하기) \n\na = 카드추가 \n\nh = 도움말\n\n나머지 = 종료\n\n");
 	printf("입력해주세요 : ");
 	Menu_input = getchar();
@@ -84,7 +79,9 @@ void menu(void)
 
 	case 'o':
 	case 'O':
-		printf("몇 번을 여시겠습니까?");
+		CLEAN;
+		grouplist();
+		printf("몇 번을 여시겠습니까? ");
 		scanf("%d", &open_num);
 		opengroup(open_num);	// 그룹 번호 검사 함수 실행
 		break;
@@ -104,16 +101,14 @@ void menu(void)
 }
 // 메뉴 끝 
 
-
-
 // 그룹 만들기--------------------------------
 void groupmaking(void)
 {
 	CLEAN;
 	char YN;
-	char Name[20];
 	printf("그룹을 생성하겠습니까? (Y/N) \n나머지 : 뒤로\n\n입력 : ");
 	YN = getchar();
+	CLEAN;
 	while (getchar() != '\n');
 	if (YN == 'y' || YN == 'Y')
 	{
@@ -131,9 +126,6 @@ void groupmaking(void)
 	}
 }
 // 그룹 만들기 끝
-
-
-
 
 // 그룹 보여주기----------------------------- 공부 시작
 void showgroup(int open)
@@ -208,7 +200,7 @@ void showgroup(int open)
 
 
 	char chk = NULL;
-	printf("되돌아 가시겠습니까? (Press any) ");
+	printf("다 맞았습니다!\n\n되돌아 가시겠습니까? (Press any) ");
 	scanf("%c", &chk);
 	while (getchar() != '\n');
 	if (chk != NULL)
@@ -216,14 +208,13 @@ void showgroup(int open)
 }
 // 그룹 보여주기 끝
 
-
-
-
 // 카드 추가----------------------------- 카드 생성 시작
 void add(void)
 {
+	CLEAN;
 	char YN; // yes or no
 	int num;
+	grouplist();
 	printf("카드를 추가할 그룹번호 : ");
 	scanf("%d%*c", &num);
 	if (num > 100 || num < 0) {
@@ -238,7 +229,7 @@ void add(void)
 	}
 
 	printf("\n\n");
-	Group[num].cnt;
+
 	while (Group[num].cnt <= 100)
 	{
 		printf("앞면 : ");
@@ -254,8 +245,6 @@ void add(void)
 
 		scanf("%c", &YN);
 		while (getchar() != '\n');
-
-		/*printf("[debug]YN : %c\n", YN);*/
 
 		Group[num].cnt++;
 		if (YN == 'Y' || YN == 'y')
@@ -273,8 +262,6 @@ void add(void)
 }
 // 카드 추가 끝
 
-
-
 // 오픈그룹-------------------	그룹 번호 검사함 (번호가 이상하거나 존재하지 않으면 오류 발생시켜줌)
 void opengroup(int num)
 {
@@ -283,7 +270,7 @@ void opengroup(int num)
 		menu();
 	if (Group[num].cnt == 0) {
 		printf("흠... 아무것도 없네요?\n");
-		Sleep(1000);
+		while (getchar() != '\n');
 		menu();
 	}
 	printf("그룹 : %s(%d)\n", Group[num].name, num);
@@ -291,6 +278,16 @@ void opengroup(int num)
 }
 // 오픈그룹 끝
 
+//grouplist
+void grouplist(void)
+{
+	int i;
+	for (i = 0; Group[i].name[0] != NULL; i++)
+	{
+		printf("%d번 : %s\n", i, Group[i].name);
+	}
+	printf("\n");
+}
 
 // 메뉴얼
 void description(void)
